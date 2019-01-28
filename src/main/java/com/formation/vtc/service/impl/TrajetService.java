@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.persistence.entity.Trajet;
 import com.formation.vtc.persistence.repository.TrajetRepository;
@@ -25,5 +26,9 @@ public class TrajetService implements ITrajetService{
 		List<Trajet> trajets = trajetRepo.findAll();
 		return trajets.stream().map(t -> new TrajetListItem(t))
 				.collect(Collectors.toList());
+	}
+	
+	public List<ReservationListItem> findByResa(List<String> numResa){
+		return numResa.stream().map(c-> new ReservationListItem(trajetRepo.findByNumResaList(c))).collect(Collectors.toList());
 	}
 }
