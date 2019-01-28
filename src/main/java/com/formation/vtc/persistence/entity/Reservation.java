@@ -22,9 +22,8 @@ public class Reservation {
 	@Column (name = "prenom", length = 50, nullable=false)
 	private String prenom;
 	
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	@Column (name = "numResa", unique = true, nullable=false)
-	private Long numResa;
+	private String numResa;
 	
 	@Column (name = "nbPlaces", nullable=false)
 	private int nbPlaces;
@@ -62,11 +61,11 @@ public class Reservation {
 		this.prenom = prenom;
 	}
 
-	public Long getNumResa() {
+	public String getNumResa() {
 		return numResa;
 	}
 
-	public void setNumResa(Long numResa) {
+	public void setNumResa(String numResa) {
 		this.numResa = numResa;
 	}
 
