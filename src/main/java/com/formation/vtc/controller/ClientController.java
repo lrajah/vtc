@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.service.IReservationService;
-import com.formation.vtc.service.impl.TrajetService;
 
 @RestController
 @RequestMapping(value="/api/client")
