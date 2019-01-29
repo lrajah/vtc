@@ -22,19 +22,19 @@ public class Reservation {
 	@Column (name = "prenom", length = 50, nullable=false)
 	private String prenom;
 	
-	@Column (name = "numResa", unique = true, nullable=false)
+	@Column (name = "numResa", unique = true, nullable=true)
 	private String numResa;
 	
 	@Column (name = "nbPlaces", nullable=false)
 	private int nbPlaces;
 	
-	@Column (name = "prix", nullable=false)
+	@Column (name = "prix", nullable=true)
 	private int prix;
 	
-	@Column (name = "mail", length = 50, nullable=false)
+	@Column (name = "mail", length = 50, nullable=true)
 	private String mail;
 	
-	@Column (name = "etatResa", length = 20, nullable=false)
+	@Column (name = "etatResa", length = 20, nullable=true)
 	private String etatResa;
 
 	public Long getId() {

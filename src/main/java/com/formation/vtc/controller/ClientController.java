@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.vtc.dto.ReservationListItem;
+import com.formation.vtc.service.IReservationService;
 import com.formation.vtc.service.impl.TrajetService;
 
 @RestController
@@ -14,11 +15,11 @@ import com.formation.vtc.service.impl.TrajetService;
 public class ClientController {
 	
 	@Autowired
-	TrajetService trajetServ;
+	IReservationService reservationServ;
 	
 	
 	public List<ReservationListItem> findByNumResa(List<String> numRes){
-		return trajetServ.findByResa(numRes);
+		return reservationServ.findByResa(numRes);
 	}
 	
 

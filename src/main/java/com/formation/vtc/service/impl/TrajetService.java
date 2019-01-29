@@ -28,7 +28,5 @@ public class TrajetService implements ITrajetService{
 				.collect(Collectors.toList());
 	}
 	
-	public List<ReservationListItem> findByResa(List<String> numResa){
-		return numResa.stream().map(c-> new ReservationListItem(trajetRepo.findByNumResaList(c))).collect(Collectors.toList());
-	}
+	
 }

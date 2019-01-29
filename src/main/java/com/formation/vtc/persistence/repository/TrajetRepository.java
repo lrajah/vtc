@@ -10,9 +10,6 @@ import com.formation.vtc.persistence.entity.Trajet;
 
 public interface TrajetRepository extends JpaRepository<Trajet, Long> { 
 
-	@Query (value = "SELECT * FROM reservation WHERE numResa =?1 ", nativeQuery = true)
-	Reservation findByNumResaList(String numResa);
-
 	@Query (value = "SELECT * FROM trajet ORDER BY horaire ASC", nativeQuery = true)
 	List<Trajet> findAll();
 }
