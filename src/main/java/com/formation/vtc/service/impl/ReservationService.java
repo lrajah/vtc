@@ -1,6 +1,7 @@
 package com.formation.vtc.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -9,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.formation.vtc.dto.ReservationListItem;
+import com.formation.vtc.exception.InvalidOperationException;
+import com.formation.vtc.exception.NotFoundException;
 import com.formation.vtc.persistence.entity.Reservation;
-import com.formation.vtc.persistence.entity.Trajet;
 import com.formation.vtc.persistence.repository.ReservationRepository;
 import com.formation.vtc.service.IReservationService;
 
@@ -95,5 +97,21 @@ public class ReservationService implements IReservationService {
 	
 	public List<ReservationListItem> findByResa(List<String> numResa){
 		return numResa.stream().map(c-> new ReservationListItem(reservationRepo.findByNumResaList(c).get())).collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<ReservationListItem> findByNumResa(List<String> numRes) {
+		return numRes.stream().map(c-> new ReservationListItem(reservationRepo.findByNumResaList(c).get())).collect(Collectors.toList());
+	}
+
+
+
+	@Override
+	public String deleteResa(String numRes) {
+		Optional<Reservation> opt= reservationRepo.findByNumResaList(numRes);
+		if(!(opt.isPresent())) throw new NotFoundException("La reservation: "+numRes+" n'existe pas");
+		if(opt.get().getEtatResa().equals("Annulée")) throw new InvalidOperationException("La reservation: "+numRes+" a déjà été annulée");
+		opt.get().setEtatResa("Annulée");
+		return "La reservation: "+numRes+" a été annulé";
 	}
 }
