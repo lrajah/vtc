@@ -9,20 +9,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.vtc.dto.ReservationListItem;
-import com.formation.vtc.service.impl.TrajetService;
+import com.formation.vtc.exception.NotFoundException;
+import com.formation.vtc.service.ITrajetService;
 
 @RestController
 @RequestMapping(value="/api/client")
 public class ClientController {
 	
 	@Autowired
-	TrajetService trajetServ;
+	ITrajetService trajetServ;
 	
 	@GetMapping
 	@ResponseBody
 	public List<ReservationListItem> findByNumResa(List<String> numRes){
-		return trajetServ.findByResa(numRes);
+		
+		List<ReservationListItem> opt = trajetServ.findByNumResa(numRes);
+		if(opt==null) throw new NotFoundException("Vous avez aucune réservation en cours");
+		return opt;
 	}
+	
+	@GetMapping
+	@ResponseBody
+	
+	public String deleteResa(String numRes){
+		return trajetServ.deleteResa(numRes);
+	}
+	
 	
 
 }
