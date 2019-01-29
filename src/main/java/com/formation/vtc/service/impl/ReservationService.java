@@ -95,13 +95,14 @@ public class ReservationService implements IReservationService {
 		return true;
 	}
 	
-	public List<ReservationListItem> findByResa(List<String> numResa){
-		return numResa.stream().map(c-> new ReservationListItem(reservationRepo.findByNumResaList(c).get())).collect(Collectors.toList());
-	}
-	
 	@Override
 	public List<ReservationListItem> findByNumResa(List<String> numRes) {
-		return numRes.stream().map(c-> new ReservationListItem(reservationRepo.findByNumResaList(c).get())).collect(Collectors.toList());
+		//return 
+		
+		List<String> opt = numRes.stream().
+				filter(c-> reservationRepo.findByNumResaList(c).get().getEtatResa().equals("valide")).collect(Collectors.toList());
+		return opt.stream().map(c-> new ReservationListItem(reservationRepo.findByNumResaList(c).get())).collect(Collectors.toList());
+		
 	}
 
 

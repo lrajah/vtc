@@ -1,10 +1,13 @@
 package com.formation.vtc.controller;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.vtc.dto.ReservationListItem;
+import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.exception.NotFoundException;
 import com.formation.vtc.service.IReservationService;
+import com.formation.vtc.service.ITrajetService;
 
 
 @RestController
@@ -23,6 +28,8 @@ public class ClientController {
 	
 	@Autowired
 	IReservationService reservationServ;
+	@Autowired
+	ITrajetService trajetServ;
 
 	
 	@PostMapping
@@ -40,6 +47,17 @@ public class ClientController {
 		return reservationServ.deleteResa(numRes);
 	}
 	
+	@GetMapping(value="/{date}")
+	@ResponseBody
+	public List<TrajetListItem> findByDate(@PathVariable String date) throws ParseException{
+		
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		format.setLenient(false);
+		//TODO exception gérer
+		Date date1=format.parse(date);
+		return trajetServ.findByDate(date1);
+		
+	}
 	
 
 }

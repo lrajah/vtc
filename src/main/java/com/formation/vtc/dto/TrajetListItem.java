@@ -1,11 +1,14 @@
 package com.formation.vtc.dto;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.formation.vtc.persistence.entity.Trajet;
 
 public class TrajetListItem {
-	private Date horaire;
+	private String horaire;
+	private String heure;
 	private int PlaceDispo;
 	private double prix;
 	private String etatTrajet;
@@ -17,20 +20,36 @@ public class TrajetListItem {
 	
 	
 	public TrajetListItem(Trajet t) {
-		this.setHoraire(t.getHoraire());
+		
+	    Date date = t.getHoraire(); 
+	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+	    String strDate = dateFormat.format(date);  
+		this.setHoraire(strDate);
 		this.setPlaceDispo(t.getPlaceDispo());
 		this.setPrix(t.getPrix());
 		this.setEtatTrajet(t.getEtatTrajet());
-		
+		this.setHeure((int)t.getHeure()+"H");
+	}
+
+	
+	public String getHeure() {
+		return heure;
 	}
 
 
-	public Date getHoraire() {
+	public void setHeure(String heure) {
+		this.heure = heure;
+	}
+
+
+	
+
+	public String getHoraire() {
 		return horaire;
 	}
 
 
-	public void setHoraire(Date horaire) {
+	public void setHoraire(String horaire) {
 		this.horaire = horaire;
 	}
 
