@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.exception.NotFoundException;
@@ -59,5 +61,18 @@ public class ClientController {
 		
 	}
 	
+	@GetMapping(value="/choose")
+	@ResponseBody
+	public ReservationItem chooseMySit(@RequestParam String date, @RequestParam int place) throws ParseException{
+		
+		SimpleDateFormat formatDate=new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+		formatDate.setLenient(false);
+		
+		//TODO exception gérer
+		Date dateTrans=formatDate.parse(date);
+		
+		return reservationServ.selectMySit(dateTrans, place);
+		
+	}	
 
 }

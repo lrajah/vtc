@@ -1,10 +1,15 @@
 package com.formation.vtc.persistence.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -29,13 +34,17 @@ public class Reservation {
 	private int nbPlaces;
 	
 	@Column (name = "prix", nullable=true)
-	private int prix;
+	private double prix;
 	
 	@Column (name = "mail", length = 50, nullable=true)
 	private String mail;
 	
 	@Column (name = "etatResa", length = 20, nullable=true)
 	private String etatResa;
+	
+	@ManyToOne
+	@JoinColumn(name = "IdTrajet", referencedColumnName = "id")
+	private Trajet trajet;
 
 	public Long getId() {
 		return id;
@@ -77,12 +86,12 @@ public class Reservation {
 		this.nbPlaces = nbPlaces;
 	}
 
-	public int getPrix() {
+	public double getPrix() {
 		return prix;
 	}
 
-	public void setPrix(int prix) {
-		this.prix = prix;
+	public void setPrix(double d) {
+		this.prix = d;
 	}
 
 	public String getMail() {
@@ -100,5 +109,14 @@ public class Reservation {
 	public void setEtatResa(String etatResa) {
 		this.etatResa = etatResa;
 	}
-	
+
+	public Trajet getTrajet() {
+		return trajet;
+	}
+
+	public void setTrajet(Trajet trajet) {
+		this.trajet = trajet;
+	}
+
+		
 }

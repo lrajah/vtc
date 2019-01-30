@@ -30,14 +30,6 @@ public class Trajet {
 	@Column (name = "heure", nullable=false)
 	private double heure;
 	
-	public double getHeure() {
-		return heure;
-	}
-
-	public void setHeure(double heure) {
-		this.heure = heure;
-	}
-
 	@Column (name = "placeDispo", nullable=false)
 	private int placeDispo;
 	
@@ -46,10 +38,6 @@ public class Trajet {
 	
 	@Column (name = "etatTrajet", length = 20, nullable=false)
 	private String etatTrajet;
-	
-	@OneToMany
-	@JoinColumn(name = "IdReservation", referencedColumnName = "id")
-	private List<Reservation> reservation;
 	
 	@ManyToOne
 	@JoinColumn(name = "IdNavette", referencedColumnName = "id")
@@ -104,20 +92,20 @@ public class Trajet {
 	}
 
 	
-	public List<Reservation> getReservation() {
-		return reservation;
-	}
-
-	public void setReservation(List<Reservation> reservation) {
-		this.reservation = reservation;
-	}
-
 	public Navette getNavette() {
 		return navette;
 	}
 
 	public void setNavette(Navette navette) {
 		this.navette = navette;
+	}
+	
+	public double getHeure() {
+		return heure;
+	}
+
+	public void setHeure(double heure) {
+		this.heure = heure;
 	}
 	
 }

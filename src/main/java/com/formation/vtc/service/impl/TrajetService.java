@@ -54,28 +54,18 @@ public class TrajetService implements ITrajetService{
 				trajet.setEtatTrajet("Disponible");
 				trajet.setHeure(heure[i]);
 				trajet.setHoraire(date);
-				Navette navette=new Navette();
-				trajet.setNavette(navette);
+//				Navette navette=new Navette();
+//				trajet.setNavette(navette);
 				//TODO navette.getSiege
 				trajet.setPlaceDispo(8);
 				//TODO table parametre en vrac
 				trajet.setPrix(8);
-				List<Reservation> reservation=null;
-				trajet.setReservation(reservation);
 				
 				opt.add(trajet);
 			}
 			
 		}
-//		opt.stream()
-//			.map(t -> new TrajetListItem(t))
-//			.
-//			.collect(Collectors.toList());
-//		
-		
-		// TODO Auto-generated method stub
 		return opt.stream().map(c-> new TrajetListItem(c)).collect(Collectors.toList());
 	}
-	
 
 }

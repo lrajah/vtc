@@ -1,5 +1,9 @@
 package com.formation.vtc.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,11 +13,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.exception.InvalidOperationException;
 import com.formation.vtc.exception.NotFoundException;
 import com.formation.vtc.persistence.entity.Reservation;
+import com.formation.vtc.persistence.entity.Trajet;
 import com.formation.vtc.persistence.repository.ReservationRepository;
+import com.formation.vtc.persistence.repository.TrajetRepository;
 import com.formation.vtc.service.IReservationService;
 
 @Service
@@ -22,6 +29,9 @@ public class ReservationService implements IReservationService {
 
 	@Autowired
 	private ReservationRepository reservationRepo;
+	
+	@Autowired
+	private TrajetRepository trajetRepo;
 
 	@Override
 	public Reservation save(Reservation resa) {
@@ -115,4 +125,43 @@ public class ReservationService implements IReservationService {
 		opt.get().setEtatResa("Annulée");
 		return "La reservation: "+numRes+" a été annulé";
 	}
+	
+	@Override
+	public ReservationItem selectMySit(Date date, int place) {
+		
+		if(date.compareTo(new Date()) >= 0) {
+			/*On recherche dans la bdd un trajet répondant aux attentes de l'utilisateur*/
+			Optional<Trajet> opt= trajetRepo.findDateHourSit(date);
+			
+			if(opt.isPresent()) {
+				/*Si un trajet est trouvé..*/
+				
+				if(place <= opt.get().getPlaceDispo()) {
+				
+					Reservation resa = new Reservation();
+					resa.setEtatResa("En cours");
+					//TODO vérifier le nombre max de place sélectionnées
+					resa.setNbPlaces(place);
+					resa.setPrix(opt.get().getPrix() * place);
+					
+					return new ReservationItem(resa, opt.get(), date);
+				} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
+			
+			} else {
+				
+				//TODO gestion des places
+				if(place <= 8) {
+					Reservation resa = new Reservation();
+					resa.setEtatResa("En cours");
+					//TODO vérifier le nombre max de place sélectionnées
+					resa.setNbPlaces(place);
+					resa.setPrix(place * 8);
+					
+					return new ReservationItem(resa, date);
+				} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
+			}
+		} else  throw new InvalidOperationException("La date est antérieur à la date actuelle");
+		
+		
+	}	
 }
