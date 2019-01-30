@@ -74,7 +74,7 @@ public class TrajetService implements ITrajetService {
 			}
 			
 		}
-		return opt.stream().map(c-> new TrajetListItem(c)).collect(Collectors.toList());
+		return opt.stream().sorted((c1,c2) -> c1.getHoraire().compareTo(c2.getHoraire())).map(c-> new TrajetListItem(c)).collect(Collectors.toList());
 	}
 
 }
