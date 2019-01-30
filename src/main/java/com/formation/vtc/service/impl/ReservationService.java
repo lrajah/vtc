@@ -1,8 +1,7 @@
 package com.formation.vtc.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -118,11 +117,18 @@ public class ReservationService implements IReservationService {
 
 
 	@Override
-	public String deleteResa(String numRes) {
+	public String deleteResa(String numRes) throws ParseException {
 		Optional<Reservation> opt= reservationRepo.findByNumResaList(numRes);
 		if(!(opt.isPresent())) throw new NotFoundException("La reservation: "+numRes+" n'existe pas");
 		if(opt.get().getEtatResa().equals("Annulée")) throw new InvalidOperationException("La reservation: "+numRes+" a déjà été annulée");
+		Date now=new Date();
+		
+		//TODO limite heure annulation à mettre dans la DB
+	    Date now2=new Date(now.getTime()-36000*1000);
+	   
+		if(opt.get().getTrajet().getHoraire().compareTo(now2)>0) throw new InvalidOperationException("La reservation: "+numRes+" ne pourras plus être annulée");
 		opt.get().setEtatResa("Annulée");
+		//TODO Faire remboursement et confirmer par mail l'annulation
 		return "La reservation: "+numRes+" a été annulé";
 	}
 	

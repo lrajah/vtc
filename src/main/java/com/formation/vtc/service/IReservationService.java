@@ -1,6 +1,9 @@
 package com.formation.vtc.service;
 
+
 import java.util.Date;
+
+import java.text.ParseException;
 import java.util.List;
 
 import com.formation.vtc.dto.ReservationItem;
@@ -11,6 +14,8 @@ public interface IReservationService {
 	
 	Reservation save(Reservation resa);
 	List<ReservationListItem> findByNumResa(List<String> numRes);
-	String deleteResa(String numRes);
+
 	ReservationItem selectMySit(Date date, int place);
+
+	String deleteResa(String numRes) throws ParseException;
 }

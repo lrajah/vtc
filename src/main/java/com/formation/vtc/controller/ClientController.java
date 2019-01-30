@@ -45,17 +45,18 @@ public class ClientController {
 	
 	@DeleteMapping(value="/{numRes}")
 	@ResponseBody
-	public String deleteResa(@PathVariable String numRes){
+	public String deleteResa(@PathVariable String numRes) throws ParseException{
+		//TODO gérer parse exception
 		return reservationServ.deleteResa(numRes);
 	}
 	
 	@GetMapping(value="/{date}")
 	@ResponseBody
 	public List<TrajetListItem> findByDate(@PathVariable String date) throws ParseException{
-		
+		//TODO exception gérer
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 		format.setLenient(false);
-		//TODO exception gérer
+		
 		Date date1=format.parse(date);
 		return trajetServ.findByDate(date1);
 		
