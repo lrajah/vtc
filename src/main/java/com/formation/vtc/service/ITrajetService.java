@@ -9,5 +9,7 @@ import com.formation.vtc.dto.TrajetListItem;
 public interface ITrajetService {
 
 	List<TrajetListItem> findAll();
+
 	List<TrajetListItem> findByDate(Date date) throws ParseException;
+
 }

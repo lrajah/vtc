@@ -20,10 +20,11 @@ import com.formation.vtc.service.ITrajetService;
 
 @Service
 @Transactional
-public class TrajetService implements ITrajetService{
+public class TrajetService implements ITrajetService {
 
 	@Autowired
 	private TrajetRepository trajetRepo;
+	
 	
 	@Override
 	public List<TrajetListItem> findAll() {
@@ -32,6 +33,9 @@ public class TrajetService implements ITrajetService{
 				.collect(Collectors.toList());
 	}
 
+
+	
+	
 	@Override
 	public List<TrajetListItem> findByDate(Date date) throws ParseException {
 		
