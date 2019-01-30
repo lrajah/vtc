@@ -9,4 +9,5 @@ public interface ITrajetService {
 
 	List<TrajetListItem> findAll();
 	List<TrajetListItem> findByDate(Date date);
+	
 }
