@@ -12,7 +12,7 @@ import com.formation.vtc.persistence.entity.Reservation;
 
 public interface IReservationService {
 	
-	Reservation save(Reservation resa);
+	Reservation saveReservation(Reservation resa);
 	List<ReservationListItem> findByNumResa(List<String> numRes);
 
 	ReservationItem selectMySit(Date date, int place);

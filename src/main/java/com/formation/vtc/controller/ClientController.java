@@ -20,6 +20,8 @@ import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.exception.NotFoundException;
+import com.formation.vtc.persistence.entity.Heure;
+import com.formation.vtc.persistence.entity.Reservation;
 import com.formation.vtc.service.IReservationService;
 import com.formation.vtc.service.ITrajetService;
 
@@ -74,6 +76,12 @@ public class ClientController {
 		
 		return reservationServ.selectMySit(dateTrans, place);
 		
-	}	
+	}
+	
+	@PostMapping(value="/reservation")
+	@ResponseBody
+	public Reservation reservation(@RequestBody Reservation reservation) {
+		return reservationServ.saveReservation(reservation);
+	}
 
 }

@@ -36,7 +36,7 @@ public class TrajetController {
 	@PostMapping
 	@ResponseBody
 	public Reservation save(@RequestBody Reservation reservation) {
-		return  reservationService.save(reservation);
+		return  reservationService.saveReservation(reservation);
 	
 	}
 }

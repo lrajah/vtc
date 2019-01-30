@@ -1,7 +1,5 @@
 package com.formation.vtc.dto;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.formation.vtc.persistence.entity.Reservation;
@@ -9,37 +7,42 @@ import com.formation.vtc.persistence.entity.Trajet;
 
 public class ReservationItem {
 	
-	private int nbPlace;
+	private int nbPlaces;
 	private String etatResa;
-	private long idTrajet;
-	private String date;
-	private double prixTotal;
-	private double prixUnitaire;
-	private String heure;
+	private Trajet trajet;
+	private Date date;
+	private double prix;
 	
 	public ReservationItem() {
 		
 	}
 	
 	public ReservationItem(Reservation resa, Trajet trajet, Date date) {
+		
+		this.setNbPlaces(resa.getNbPlaces());
+		this.setDate(date);
 		this.setEtatResa(resa.getEtatResa());
-		this.setIdTrajet(trajet.getId());
-		this.setNbPlace(resa.getNbPlaces());
-		this.setPrixUnitaire(trajet.getPrix());
-		this.setPrixTotal(resa.getPrix());
+		this.setPrix(resa.getPrix());
+		this.setTrajet(trajet);
 		
-		Date dateTrans = date; 
-	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-	    String strDate = dateFormat.format(dateTrans);  
-		this.setDate(strDate);
-		
-		DateFormat heureFormat = new SimpleDateFormat("HH:mm");  
-	    String strHeure = heureFormat.format(dateTrans);
-		this.setHeure(strHeure + "H");
+//		this.setEtatResa(resa.getEtatResa());
+//		this.setIdTrajet(trajet.getId());
+//		this.setNbPlace(resa.getNbPlaces());
+//		this.setPrixUnitaire(trajet.getPrix());
+//		this.setPrixTotal(resa.getPrix());
+//		
+//		Date dateTrans = date; 
+//	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+//	    String strDate = dateFormat.format(dateTrans);  
+//		this.setDate(strDate);
+//		
+//		DateFormat heureFormat = new SimpleDateFormat("HH:mm");  
+//	    String strHeure = heureFormat.format(dateTrans);
+//		this.setHeure(strHeure + "H");
 	}
 	
 	public ReservationItem(Reservation resa, Date date) {
-		this.setEtatResa(resa.getEtatResa());
+		/*this.setEtatResa(resa.getEtatResa());
 		this.setNbPlace(resa.getNbPlaces());
 		this.setPrixUnitaire(8);
 		this.setPrixTotal(resa.getPrix());
@@ -51,59 +54,47 @@ public class ReservationItem {
 
 		DateFormat heureFormat = new SimpleDateFormat("HH:mm");  
 	    String strHeure = heureFormat.format(dateTrans);
-		this.setHeure(strHeure + "H");
+		this.setHeure(strHeure + "H");*/
 	}
-	
-	public int getNbPlace() {
-		return nbPlace;
+
+	public int getNbPlaces() {
+		return nbPlaces;
 	}
-	public void setNbPlace(int nbPlace) {
-		this.nbPlace = nbPlace;
+
+	public void setNbPlaces(int nbPlaces) {
+		this.nbPlaces = nbPlaces;
 	}
+
 	public String getEtatResa() {
 		return etatResa;
 	}
+
 	public void setEtatResa(String etatResa) {
 		this.etatResa = etatResa;
 	}
-	public long getIdTrajet() {
-		return idTrajet;
-	}
-	public void setIdTrajet(long idTrajet) {
-		this.idTrajet = idTrajet;
+
+	public Trajet getTrajet() {
+		return trajet;
 	}
 
-	public String getDate() {
+	public void setTrajet(Trajet trajet) {
+		this.trajet = trajet;
+	}
+
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	public double getPrixUnitaire() {
-		return prixUnitaire;
+	public double getPrix() {
+		return prix;
 	}
 
-	public void setPrixUnitaire(double prixUnitaire) {
-		this.prixUnitaire = prixUnitaire;
+	public void setPrix(double prix) {
+		this.prix = prix;
 	}
-
-	public double getPrixTotal() {
-		return prixTotal;
-	}
-
-	public void setPrixTotal(double prixTotal) {
-		this.prixTotal = prixTotal;
-	}
-
-	public String getHeure() {
-		return heure;
-	}
-
-	public void setHeure(String heure) {
-		this.heure = heure;
-	}
-	
 	
 }

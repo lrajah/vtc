@@ -7,6 +7,7 @@ import java.util.Date;
 import com.formation.vtc.persistence.entity.Trajet;
 
 public class TrajetListItem {
+	private long idTrajet;
 	private String horaire;
 	private int PlaceDispo;
 	private double prix;
@@ -23,7 +24,7 @@ public class TrajetListItem {
 	    Date date = t.getHoraire(); 
 	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
 	    String strDate = dateFormat.format(date);
-	     
+	     this.setIdTrajet(t.getId());
 		this.setHoraire(strDate);
 		this.setPlaceDispo(t.getPlaceDispo());
 		this.setPrix(t.getPrix());
@@ -72,6 +73,16 @@ public class TrajetListItem {
 
 	public void setEtatTrajet(String etatTrajet) {
 		this.etatTrajet = etatTrajet;
+	}
+
+
+	public long getIdTrajet() {
+		return idTrajet;
+	}
+
+
+	public void setIdTrajet(long idTrajet) {
+		this.idTrajet = idTrajet;
 	}
 	
 	

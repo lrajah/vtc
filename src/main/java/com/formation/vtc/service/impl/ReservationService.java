@@ -33,18 +33,21 @@ public class ReservationService implements IReservationService {
 	private TrajetRepository trajetRepo;
 
 	@Override
-	public Reservation save(Reservation resa) {
+	public Reservation saveReservation(Reservation resa) {
+		
+		//TODO faire vérif
+		resa.setNumResa(makeNumResa(10));
+		reservationRepo.save(resa);
+//		Reservation resaTemp = new Reservation();
 
-		Reservation resaTemp = new Reservation();
-
-		resaTemp.setNom(resa.getNom());
-		resaTemp.setPrenom(resa.getPrenom());
-		resaTemp.setNumResa(makeNumResa(10));
-		resaTemp.setPrix(resa.getNbPlaces() * 8);
-		resaTemp.setNbPlaces(resa.getNbPlaces());
-		resaTemp.setEtatResa("valide");
-		resaTemp.setMail("toto@test.com");
-		return reservationRepo.save(resaTemp);
+//		resaTemp.setNom(resa.getNom());
+//		resaTemp.setPrenom(resa.getPrenom());
+//		resaTemp.setNumResa(makeNumResa(10));
+//		resaTemp.setPrix(resa.getNbPlaces() * 8);
+//		resaTemp.setNbPlaces(resa.getNbPlaces());
+//		resaTemp.setEtatResa("valide");
+//		resaTemp.setMail("toto@test.com");
+		return resa;
 	}
 
 	private String makeNumResa(int count) {
@@ -124,9 +127,10 @@ public class ReservationService implements IReservationService {
 		Date now=new Date();
 		
 		//TODO limite heure annulation à mettre dans la DB
-	    Date now2=new Date(now.getTime()-36000*1000);
-	   
-		if(opt.get().getTrajet().getHoraire().compareTo(now2)>0) throw new InvalidOperationException("La reservation: "+numRes+" ne pourras plus être annulée");
+	    Date now2=new Date(now.getTime());
+	    
+	   Date dateTrajetDate=new Date(opt.get().getTrajet().getHoraire().getTime()-3600*1000);
+		if(now2.compareTo(dateTrajetDate)>0) throw new InvalidOperationException("La reservation: "+numRes+" ne pourras plus être annulée");
 		opt.get().setEtatResa("Annulée");
 		//TODO Faire remboursement et confirmer par mail l'annulation
 		return "La reservation: "+numRes+" a été annulé";
@@ -148,8 +152,12 @@ public class ReservationService implements IReservationService {
 					resa.setEtatResa("En cours");
 					//TODO vérifier le nombre max de place sélectionnées
 					resa.setNbPlaces(place);
+					resa.setNom("Jean");
+					resa.setPrenom("Jack");
 					resa.setPrix(opt.get().getPrix() * place);
-					
+					resa.setTrajet(opt.get());
+					reservationRepo.save(resa);
+					//TODO check save
 					return new ReservationItem(resa, opt.get(), date);
 				} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
 			
@@ -162,7 +170,7 @@ public class ReservationService implements IReservationService {
 					//TODO vérifier le nombre max de place sélectionnées
 					resa.setNbPlaces(place);
 					resa.setPrix(place * 8);
-					
+					reservationRepo.save(resa);
 					return new ReservationItem(resa, date);
 				} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
 			}
