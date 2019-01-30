@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -36,6 +38,9 @@ public class Reservation {
 	
 	@Column (name = "etatResa", length = 20, nullable=true)
 	private String etatResa;
+	@ManyToOne
+	@JoinColumn(name = "IdTrajet", referencedColumnName = "id")
+	private Trajet trajet;
 
 	public Long getId() {
 		return id;
@@ -99,6 +104,14 @@ public class Reservation {
 
 	public void setEtatResa(String etatResa) {
 		this.etatResa = etatResa;
+	}
+
+	public Trajet getTrajet() {
+		return trajet;
+	}
+
+	public void setTrajet(Trajet trajet) {
+		this.trajet = trajet;
 	}
 	
 }

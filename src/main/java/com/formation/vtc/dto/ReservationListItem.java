@@ -1,5 +1,9 @@
 package com.formation.vtc.dto;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.formation.vtc.persistence.entity.Reservation;
 
 public class ReservationListItem {
@@ -10,6 +14,7 @@ public class ReservationListItem {
 	private String numResa;
 	private int nbPlaces;
 	private double prix;
+	private String horaire;
 	
 	public ReservationListItem(Reservation reservations) {
 		this.setNom(reservations.getNom());
@@ -17,8 +22,27 @@ public class ReservationListItem {
 		this.setNumResa(reservations.getNumResa());
 		this.setNbPlaces(reservations.getNbPlaces());
 		this.setPrix(reservations.getPrix());
+		
+		 Date date = reservations.getTrajet().getHoraire(); 
+		 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
+		 String strDate = dateFormat.format(date);
+		this.setHoraire(strDate);
 	}
 	
+	
+	
+	public String getHoraire() {
+		return horaire;
+	}
+
+
+
+	public void setHoraire(String horaire) {
+		this.horaire = horaire;
+	}
+
+
+
 	public String getNom() {
 		return nom;
 	}

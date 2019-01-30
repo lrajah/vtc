@@ -1,5 +1,6 @@
 package com.formation.vtc.service.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.persistence.entity.Navette;
-import com.formation.vtc.persistence.entity.Reservation;
 import com.formation.vtc.persistence.entity.Trajet;
 import com.formation.vtc.persistence.repository.TrajetRepository;
 import com.formation.vtc.service.ITrajetService;
@@ -33,15 +33,16 @@ public class TrajetService implements ITrajetService{
 	}
 
 	@Override
-	public List<TrajetListItem> findByDate(Date date) {
+	public List<TrajetListItem> findByDate(Date date) throws ParseException {
 		
 		ArrayList<Trajet>opt=new ArrayList<Trajet>();
+		//TODO Ecrire dans la BD
+		Long heure[]= {new Long(28800000),new Long(39600000),new Long(50400000),new Long(61200000)};
 		
-		int heure[]= {8,11,14,17};
-		
-		for(int i=0;i< heure.length;i++) {
+		for(Long h:heure) {
 			
-			Optional<Trajet> opt2= trajetRepo.findByDateAndHour(date,heure[i]);
+			Date horaire= new Date(date.getTime()+h);
+			Optional<Trajet> opt2= trajetRepo.findByDate(horaire);
 			
 			if(opt2.isPresent()) {
 				opt.add(opt2.get());
@@ -52,16 +53,13 @@ public class TrajetService implements ITrajetService{
 				
 				//TODO Faire la vérif de si c'est passé ou pas
 				trajet.setEtatTrajet("Disponible");
-				trajet.setHeure(heure[i]);
-				trajet.setHoraire(date);
+				trajet.setHoraire(horaire);
 				Navette navette=new Navette();
 				trajet.setNavette(navette);
 				//TODO navette.getSiege
 				trajet.setPlaceDispo(8);
 				//TODO table parametre en vrac
 				trajet.setPrix(8);
-				List<Reservation> reservation=null;
-				trajet.setReservation(reservation);
 				
 				opt.add(trajet);
 			}

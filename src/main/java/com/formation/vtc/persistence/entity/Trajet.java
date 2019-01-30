@@ -1,7 +1,6 @@
 package com.formation.vtc.persistence.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,16 +25,7 @@ public class Trajet {
 	
 	@Column (name = "horaire", nullable=false)
 	private Date horaire;
-	@Column (name = "heure", nullable=false)
-	private double heure;
 	
-	public double getHeure() {
-		return heure;
-	}
-
-	public void setHeure(double heure) {
-		this.heure = heure;
-	}
 
 	@Column (name = "placeDispo", nullable=false)
 	private int placeDispo;
@@ -47,9 +36,7 @@ public class Trajet {
 	@Column (name = "etatTrajet", length = 20, nullable=false)
 	private String etatTrajet;
 	
-	@OneToMany
-	@JoinColumn(name = "IdReservation", referencedColumnName = "id")
-	private List<Reservation> reservation;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "IdNavette", referencedColumnName = "id")
@@ -103,15 +90,6 @@ public class Trajet {
 		this.etatTrajet = etatTrajet;
 	}
 
-	
-	public List<Reservation> getReservation() {
-		return reservation;
-	}
-
-	public void setReservation(List<Reservation> reservation) {
-		this.reservation = reservation;
-	}
-
 	public Navette getNavette() {
 		return navette;
 	}
@@ -119,5 +97,6 @@ public class Trajet {
 	public void setNavette(Navette navette) {
 		this.navette = navette;
 	}
+
 	
 }
