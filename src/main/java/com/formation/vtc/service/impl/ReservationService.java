@@ -2,6 +2,7 @@ package com.formation.vtc.service.impl;
 
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -140,40 +141,40 @@ public class ReservationService implements IReservationService {
 	public ReservationItem selectMySit(Date date, int place) {
 		
 		if(date.compareTo(new Date()) >= 0) {
+			
+			//Création d'un objet Trajet
+			Trajet trajet = new Trajet();
+			
 			/*On recherche dans la bdd un trajet répondant aux attentes de l'utilisateur*/
 			Optional<Trajet> opt= trajetRepo.findDateHourSit(date);
-			
 			if(opt.isPresent()) {
 				/*Si un trajet est trouvé..*/
-				
-				if(place <= opt.get().getPlaceDispo()) {
-				
-					Reservation resa = new Reservation();
-					resa.setEtatResa("En cours");
-					//TODO vérifier le nombre max de place sélectionnées
-					resa.setNbPlaces(place);
-					resa.setNom("Jean");
-					resa.setPrenom("Jack");
-					resa.setPrix(opt.get().getPrix() * place);
-					resa.setTrajet(opt.get());
-					reservationRepo.save(resa);
-					//TODO check save
-					return new ReservationItem(resa, opt.get(), date);
-				} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
+				trajet = opt.get();
 			
 			} else {
+				trajet.setDateCreation(new Date());
+				trajet.setEtatTrajet("En cours");
 				
-				//TODO gestion des places
-				if(place <= 8) {
-					Reservation resa = new Reservation();
-					resa.setEtatResa("En cours");
-					//TODO vérifier le nombre max de place sélectionnées
-					resa.setNbPlaces(place);
-					resa.setPrix(place * 8);
-					reservationRepo.save(resa);
-					return new ReservationItem(resa, date);
-				} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
+				trajet.setHoraire(date);
+				trajet.setNavette(null);
+				trajet.setPlaceDispo(8-place);
+				trajet.setPrix(8);
 			}
+			
+			if(place <= 8 && place <= trajet.getPlaceDispo()) {
+			
+			Reservation resa = new Reservation();
+			resa.setEtatResa("En cours");
+			//TODO vérifier le nombre max de place sélectionnées
+			resa.setNbPlaces(place);
+			resa.setNom("Jean");
+			resa.setPrenom("Jack");
+			resa.setPrix(trajet.getPrix() * place);
+			resa.setTrajet(trajet);
+			return new ReservationItem(resa, trajet, date);
+			
+			} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
+			
 		} else  throw new InvalidOperationException("La date est antérieur à la date actuelle");
 		
 		

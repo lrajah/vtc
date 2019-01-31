@@ -1,5 +1,7 @@
 package com.formation.vtc.dto;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.formation.vtc.persistence.entity.Reservation;
@@ -10,8 +12,11 @@ public class ReservationItem {
 	private int nbPlaces;
 	private String etatResa;
 	private Trajet trajet;
-	private Date date;
+	private String date;
 	private double prix;
+	private String nom;
+	private String prenom;
+	private String email;
 	
 	public ReservationItem() {
 		
@@ -19,44 +24,23 @@ public class ReservationItem {
 	
 	public ReservationItem(Reservation resa, Trajet trajet, Date date) {
 		
+		this.setNom("");
+		this.setPrenom("");
+		this.setEmail("");
 		this.setNbPlaces(resa.getNbPlaces());
-		this.setDate(date);
+		
+		
+		Date dateTrans = date; 
+	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");  
+	    String strDate = dateFormat.format(dateTrans);  
+		this.setDate(strDate);
+		
 		this.setEtatResa(resa.getEtatResa());
 		this.setPrix(resa.getPrix());
 		this.setTrajet(trajet);
 		
-//		this.setEtatResa(resa.getEtatResa());
-//		this.setIdTrajet(trajet.getId());
-//		this.setNbPlace(resa.getNbPlaces());
-//		this.setPrixUnitaire(trajet.getPrix());
-//		this.setPrixTotal(resa.getPrix());
-//		
-//		Date dateTrans = date; 
-//	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-//	    String strDate = dateFormat.format(dateTrans);  
-//		this.setDate(strDate);
-//		
-//		DateFormat heureFormat = new SimpleDateFormat("HH:mm");  
-//	    String strHeure = heureFormat.format(dateTrans);
-//		this.setHeure(strHeure + "H");
-	}
+		}
 	
-	public ReservationItem(Reservation resa, Date date) {
-		/*this.setEtatResa(resa.getEtatResa());
-		this.setNbPlace(resa.getNbPlaces());
-		this.setPrixUnitaire(8);
-		this.setPrixTotal(resa.getPrix());
-		
-		Date dateTrans = date; 
-	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-	    String strDate = dateFormat.format(dateTrans); 
-		this.setDate(strDate);
-
-		DateFormat heureFormat = new SimpleDateFormat("HH:mm");  
-	    String strHeure = heureFormat.format(dateTrans);
-		this.setHeure(strHeure + "H");*/
-	}
-
 	public int getNbPlaces() {
 		return nbPlaces;
 	}
@@ -81,12 +65,12 @@ public class ReservationItem {
 		this.trajet = trajet;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(String strDate) {
+		this.date = strDate;
 	}
 
 	public double getPrix() {
@@ -95,6 +79,30 @@ public class ReservationItem {
 
 	public void setPrix(double prix) {
 		this.prix = prix;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }
