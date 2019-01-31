@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.dto.TrajetListItem;
+import com.formation.vtc.dto.TrajetReservationItem;
 import com.formation.vtc.exception.NotFoundException;
 import com.formation.vtc.persistence.entity.Heure;
 import com.formation.vtc.persistence.entity.Reservation;
@@ -80,8 +81,13 @@ public class ClientController {
 	
 	@PostMapping(value="/reservation")
 	@ResponseBody
-	public Reservation reservation(@RequestBody Reservation reservation) {
-		return reservationServ.saveReservation(reservation);
+	public ReservationItem reservation(@RequestBody ReservationItem reservationItem) throws ParseException {
+		return reservationServ.saveReservationTmp(reservationItem);
+	}
+	@GetMapping(value="/reservation/confirm/{numResa}")
+	@ResponseBody
+	public ReservationItem reservationConfirm(@PathVariable String numResa) throws ParseException {
+		return reservationServ.saveReservation(numResa);
 	}
 
 }

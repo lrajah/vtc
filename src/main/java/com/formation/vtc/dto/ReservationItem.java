@@ -8,39 +8,60 @@ import com.formation.vtc.persistence.entity.Reservation;
 import com.formation.vtc.persistence.entity.Trajet;
 
 public class ReservationItem {
-	
+	private Long id;
 	private int nbPlaces;
 	private String etatResa;
-	private Trajet trajet;
+	private TrajetListItem trajetItem;
 	private String date;
 	private double prix;
 	private String nom;
 	private String prenom;
 	private String email;
+	private String numResa;
 	
 	public ReservationItem() {
 		
 	}
 	
-	public ReservationItem(Reservation resa, Trajet trajet, Date date) {
+	public ReservationItem(Reservation resa) {
 		
-		this.setNom("");
-		this.setPrenom("");
-		this.setEmail("");
+		this.setNom(resa.getNom());
+		this.setPrenom(resa.getPrenom());
+		this.setEmail(resa.getMail());
 		this.setNbPlaces(resa.getNbPlaces());
 		
 		
-		Date dateTrans = date; 
 	    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");  
-	    String strDate = dateFormat.format(dateTrans);  
+	    String strDate = dateFormat.format(resa.getTrajet().getHoraire());  
 		this.setDate(strDate);
 		
 		this.setEtatResa(resa.getEtatResa());
 		this.setPrix(resa.getPrix());
-		this.setTrajet(trajet);
+		TrajetListItem trajetItem=new TrajetListItem(resa.getTrajet());
+		this.setTrajetItem(trajetItem);
+		this.setNumResa(resa.getNumResa());
+		this.setId(resa.getId());
 		
 		}
 	
+	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNumResa() {
+		return numResa;
+	}
+
+	public void setNumResa(String numResa) {
+		this.numResa = numResa;
+	}
+
 	public int getNbPlaces() {
 		return nbPlaces;
 	}
@@ -57,12 +78,14 @@ public class ReservationItem {
 		this.etatResa = etatResa;
 	}
 
-	public Trajet getTrajet() {
-		return trajet;
+	
+
+	public TrajetListItem getTrajetItem() {
+		return trajetItem;
 	}
 
-	public void setTrajet(Trajet trajet) {
-		this.trajet = trajet;
+	public void setTrajetItem(TrajetListItem trajetItem) {
+		this.trajetItem = trajetItem;
 	}
 
 	public String getDate() {

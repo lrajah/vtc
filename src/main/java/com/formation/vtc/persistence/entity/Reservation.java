@@ -1,5 +1,8 @@
 package com.formation.vtc.persistence.entity;
 
+import java.text.ParseException;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.formation.vtc.dto.ReservationItem;
 
 @Entity
 @Table(name="reservation")
@@ -42,6 +47,26 @@ public class Reservation {
 	@ManyToOne
 	@JoinColumn(name = "IdTrajet", referencedColumnName = "id")
 	private Trajet trajet;
+	
+	public Reservation resaItemToResa(ReservationItem resaItem) throws ParseException {
+		this.setNom(resaItem.getNom());
+		this.setPrenom(resaItem.getPrenom());
+		this.setNumResa(resaItem.getNumResa());
+		this.setNbPlaces(resaItem.getNbPlaces());
+		this.setPrix(resaItem.getPrix());
+		this.setMail(resaItem.getEmail());
+		this.setEtatResa(resaItem.getEtatResa());
+		
+		Trajet trajet= new Trajet();
+		trajet.trajetItemToTrajet(resaItem.getTrajetItem());
+		this.setTrajet(trajet);
+		return this;
+		
+	}
+
+	public Reservation() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getId() {
 		return id;

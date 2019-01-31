@@ -18,7 +18,7 @@ public interface TrajetRepository extends JpaRepository<Trajet, Long> {
 	@Query(value= "SELECT * FROM trajet WHERE horaire= DATE_FORMAT(?1,\"%Y-%m-%d %T\")", nativeQuery = true)
 	Optional<Trajet> findDateHourSit(Date date);
 
-	@Query(value= "SELECT * FROM trajet WHERE horaire= DATE_FORMAT(?1,\"%Y-%m-%d\") AND placeDispo > 0 ORDER BY horaire ASC", nativeQuery = true)
+	@Query(value= "SELECT * FROM trajet WHERE horaire= DATE_FORMAT(?1,\"%Y-%m-%d %T\") AND placeDispo > 0 ORDER BY horaire ASC", nativeQuery = true)
 	Optional<Trajet> findByDate(Date date);
 	//@Query(value= "SELECT * FROM trajet WHERE horaire= DATE_FORMAT(?1,\"%Y-%M-%d\") AND placeDispo > 0  AND heure=?2 ORDER BY horaire ASC", nativeQuery = true)
 	//Optional<Trajet> findByDateAndHour(Date date, Long heure);

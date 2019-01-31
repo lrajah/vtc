@@ -24,7 +24,7 @@ public class ReservationListItem {
 		this.setPrix(reservations.getPrix());
 		
 		 Date date = reservations.getTrajet().getHoraire(); 
-		 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
+		 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");  
 		 String strDate = dateFormat.format(date);
 		this.setHoraire(strDate);
 	}

@@ -1,5 +1,7 @@
 package com.formation.vtc.persistence.entity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.formation.vtc.dto.TrajetListItem;
 
 @Entity
 @Table(name="trajet")
@@ -40,6 +44,23 @@ public class Trajet {
 	@JoinColumn(name = "IdNavette", referencedColumnName = "id")
 	private Navette navette;
 
+	
+	
+	public Trajet trajetItemToTrajet(TrajetListItem trajetItem) throws ParseException {
+		this.setId(trajetItem.getId());
+		this.setDateCreation(new Date());
+		SimpleDateFormat formatDate=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		formatDate.setLenient(false);
+		
+		//TODO exception gérer
+		Date horaire=formatDate.parse(trajetItem.getHoraire());
+		this.setHoraire(horaire);
+		this.setPlaceDispo(trajetItem.getPlaceDispo());
+		this.setPrix(trajetItem.getPrix());
+		this.setEtatTrajet(trajetItem.getEtatTrajet());
+		return this;
+		
+	}
 	public Long getId() {
 		return id;
 	}

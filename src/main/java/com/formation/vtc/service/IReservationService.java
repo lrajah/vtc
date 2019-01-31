@@ -12,7 +12,8 @@ import com.formation.vtc.persistence.entity.Reservation;
 
 public interface IReservationService {
 	
-	Reservation saveReservation(Reservation resa);
+	ReservationItem saveReservation(String resa) throws ParseException;
+	ReservationItem saveReservationTmp(ReservationItem resa) throws ParseException;
 	List<ReservationListItem> findByNumResa(List<String> numRes);
 
 	ReservationItem selectMySit(Date date, int place);

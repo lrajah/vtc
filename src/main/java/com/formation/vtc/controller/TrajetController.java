@@ -23,8 +23,6 @@ public class TrajetController {
 	@Autowired
 	private ITrajetService trajetService;
 	
-	@Autowired
-	private IReservationService reservationService;
 	
 	@GetMapping
 	@ResponseBody
@@ -33,10 +31,5 @@ public class TrajetController {
 		return trajetService.findAll();
 	}
 	
-	@PostMapping
-	@ResponseBody
-	public Reservation save(@RequestBody Reservation reservation) {
-		return  reservationService.saveReservation(reservation);
 	
-	}
 }

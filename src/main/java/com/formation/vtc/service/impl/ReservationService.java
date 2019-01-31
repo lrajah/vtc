@@ -2,7 +2,6 @@ package com.formation.vtc.service.impl;
 
 
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,24 +33,36 @@ public class ReservationService implements IReservationService {
 	private TrajetRepository trajetRepo;
 
 	@Override
-	public Reservation saveReservation(Reservation resa) {
+	public ReservationItem saveReservationTmp(ReservationItem resa) throws ParseException {
 		
 		//TODO faire vérif
+		
 		resa.setNumResa(makeNumResa(10));
-		reservationRepo.save(resa);
-//		Reservation resaTemp = new Reservation();
+		resa.setEtatResa("En attente");
+		
+		Reservation reservation= new Reservation();
+		reservation.resaItemToResa(resa);
 
-//		resaTemp.setNom(resa.getNom());
-//		resaTemp.setPrenom(resa.getPrenom());
-//		resaTemp.setNumResa(makeNumResa(10));
-//		resaTemp.setPrix(resa.getNbPlaces() * 8);
-//		resaTemp.setNbPlaces(resa.getNbPlaces());
-//		resaTemp.setEtatResa("valide");
-//		resaTemp.setMail("toto@test.com");
-		return resa;
+		reservation.setTrajet(trajetRepo.save(reservation.getTrajet()));
+		return new ReservationItem(reservationRepo.save(reservation));
+	}
+	
+	@Override
+	public ReservationItem saveReservation(String numResa) throws ParseException {
+		
+		//TODO faire vérif si payment valide
+		
+		Optional<Reservation> opt= reservationRepo.findByNumResaList(numResa);
+		
+		//resa.setNumResa(makeNumResa(10));
+		opt.get().setEtatResa("Valide");
+		
+		
+		return new ReservationItem(reservationRepo.save(opt.get()));
 	}
 
-	private String makeNumResa(int count) {
+
+	public String makeNumResa(int count) {
 		
 		int a = 0;
 		
@@ -171,12 +182,13 @@ public class ReservationService implements IReservationService {
 			resa.setPrenom("Jack");
 			resa.setPrix(trajet.getPrix() * place);
 			resa.setTrajet(trajet);
-			return new ReservationItem(resa, trajet, date);
+			return new ReservationItem(resa);
 			
 			} else throw new InvalidOperationException("Nombre de places disponible insuffisant");
 			
 		} else  throw new InvalidOperationException("La date est antérieur à la date actuelle");
 		
 		
-	}	
+	}
+
 }
