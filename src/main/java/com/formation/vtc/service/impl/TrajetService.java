@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.formation.vtc.dto.TrajetListItem;
+import com.formation.vtc.persistence.entity.Heure;
 import com.formation.vtc.persistence.entity.Navette;
 import com.formation.vtc.persistence.entity.Trajet;
+import com.formation.vtc.persistence.repository.HeureRepository;
 import com.formation.vtc.persistence.repository.TrajetRepository;
 import com.formation.vtc.service.ITrajetService;
 
@@ -24,6 +26,8 @@ public class TrajetService implements ITrajetService {
 
 	@Autowired
 	private TrajetRepository trajetRepo;
+	@Autowired
+	private HeureRepository heureRepo;
 	
 	
 	@Override
@@ -41,11 +45,11 @@ public class TrajetService implements ITrajetService {
 		
 		ArrayList<Trajet>opt=new ArrayList<Trajet>();
 		//TODO Ecrire dans la BD
-		Long heure[]= {new Long(28800000),new Long(39600000),new Long(50400000),new Long(61200000)};
+		//Long heure[]= {new Long(28800000),new Long(39600000),new Long(50400000),new Long(61200000)};
 		
-		for(Long h:heure) {
+		for(Heure h:heureRepo.findAll()) {
 			
-			Date horaire= new Date(date.getTime()+h);
+			Date horaire= new Date(date.getTime()+h.getHeureDepart());
 			Optional<Trajet> opt2= trajetRepo.findByDate(horaire);
 			
 			if(opt2.isPresent()) {
@@ -70,7 +74,7 @@ public class TrajetService implements ITrajetService {
 			}
 			
 		}
-		return opt.stream().map(c-> new TrajetListItem(c)).collect(Collectors.toList());
+		return opt.stream().sorted((c1,c2) -> c1.getHoraire().compareTo(c2.getHoraire())).map(c-> new TrajetListItem(c)).collect(Collectors.toList());
 	}
 
 }
