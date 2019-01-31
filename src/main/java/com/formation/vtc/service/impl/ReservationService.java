@@ -41,8 +41,8 @@ public class ReservationService implements IReservationService {
 		resa.setEtatResa("En attente");
 		
 		Reservation reservation= new Reservation();
-		reservation.resaItemToResa(resa);
-
+		reservation.resaItemToResa(resa).getTrajet().setPlaceDispo(reservation.getTrajet().getPlaceDispo()-reservation.getNbPlaces());
+		
 		reservation.setTrajet(trajetRepo.save(reservation.getTrajet()));
 		return new ReservationItem(reservationRepo.save(reservation));
 	}
@@ -56,6 +56,8 @@ public class ReservationService implements IReservationService {
 		
 		//resa.setNumResa(makeNumResa(10));
 		opt.get().setEtatResa("Valide");
+		
+		//opt.get().getTrajet().setPlaceDispo(opt.get().getTrajet().getPlaceDispo()-opt.get().getNbPlaces());
 		
 		
 		return new ReservationItem(reservationRepo.save(opt.get()));

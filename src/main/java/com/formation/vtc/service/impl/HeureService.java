@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.formation.vtc.dto.HeureDepartListItem;
+import com.formation.vtc.exception.InvalidOperationException;
 import com.formation.vtc.persistence.entity.Heure;
 import com.formation.vtc.persistence.repository.HeureRepository;
 import com.formation.vtc.service.IHeureService;
@@ -22,7 +23,7 @@ public class HeureService implements IHeureService {
 	@Override
 	public  Heure save(Heure heureDepart) {
 		
-		//TODO  vérifier que l'objet est bien de bonne forme
+		if((heureDepart.getHeureDepart() < 0) ||(heureDepart.getHeureDepart()>=24*3600*1000) ) throw new InvalidOperationException("L'heure de départ n'est pas conforme");
 		return heureRepo.save(heureDepart);
 	}
 
