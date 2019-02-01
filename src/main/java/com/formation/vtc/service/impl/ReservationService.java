@@ -41,6 +41,7 @@ public class ReservationService implements IReservationService {
 		resa.setNumResa(makeNumResa(10));
 		resa.setEtatResa("En attente");
 		
+		if(!(MailSender.mailCHecker(resa.getEmail())))throw new InvalidOperationException("L'email est incorrect");
 		Reservation reservation= new Reservation();
 		reservation.resaItemToResa(resa).getTrajet().setPlaceDispo(reservation.getTrajet().getPlaceDispo()-reservation.getNbPlaces());
 		

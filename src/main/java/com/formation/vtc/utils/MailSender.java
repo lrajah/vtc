@@ -1,6 +1,8 @@
 package com.formation.vtc.utils;
 
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -84,6 +86,23 @@ public class MailSender {
 			mex.printStackTrace();
 		}
 	}
+	
+	public static boolean mailCHecker(String args){
+
+
+        String email = args;
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(email);
+
+        if(mat.matches()){
+
+        	return true;
+        }else{
+
+        	return false;
+        }
+		
+    }
 
 	public String getTo() {
 		return to;
