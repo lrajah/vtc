@@ -1,6 +1,7 @@
 package com.formation.vtc.service.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -10,9 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.exception.InvalidOperationException;
+import com.formation.vtc.persistence.entity.Reservation;
 import com.formation.vtc.persistence.entity.Trajet;
+import com.formation.vtc.persistence.repository.ReservationRepository;
 import com.formation.vtc.persistence.repository.TrajetRepository;
 import com.formation.vtc.service.IAdminService;
+import com.formation.vtc.utils.MailSender;
 
 @Service
 @Transactional
@@ -20,7 +24,8 @@ public class AdminService implements IAdminService{
 	
 	@Autowired
 	TrajetRepository trajetRepo;
-	
+	@Autowired
+	ReservationRepository reservationRepo;
 	@Override
 	public TrajetListItem cancelTournee(long id) {
 		
@@ -39,6 +44,19 @@ public class AdminService implements IAdminService{
 			opt.get().setEtatTrajet("Annulée");
 			
 		} else throw new InvalidOperationException("Le trajet : "+id+" n'a pas été trouvé");
+		MailSender email = new MailSender();
+		
+		List<Reservation> reservations= reservationRepo.findByTrajetId(id);
+		if(reservations==null) return new TrajetListItem(opt.get());
+		
+		TrajetListItem res=new TrajetListItem(opt.get());
+		String from="lokulen@gmail.com";
+		String subject="Trajet Proxair annulé";
+		String msg="<h1>Le trajet du : "+res.getHoraire()+"  a été annulé par Proxair</h1>";
+		
+		for(Reservation r:reservations) {
+			email.sendMail(r.getMail(), from, subject, msg);
+		}
 		
 		return new TrajetListItem(opt.get());
 	}

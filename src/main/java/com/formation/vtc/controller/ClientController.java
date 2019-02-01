@@ -1,5 +1,6 @@
 package com.formation.vtc.controller;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +21,7 @@ import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.dto.TrajetReservationItem;
+import com.formation.vtc.exception.InvalidOperationException;
 import com.formation.vtc.exception.NotFoundException;
 import com.formation.vtc.persistence.entity.Heure;
 import com.formation.vtc.persistence.entity.Reservation;
@@ -61,7 +63,16 @@ public class ClientController {
 		format.setLenient(false);
 		
 		Date date1=format.parse(date);
-		return trajetServ.findByDate(date1);
+		
+		Date now=new Date();
+		DateFormat formatNow=new SimpleDateFormat("yyyy-MM-dd");
+		String strDate = formatNow.format(now);
+		
+		format.setLenient(false);
+		Date now2=format.parse(strDate);
+		if(date1.compareTo(now2)>0)return trajetServ.findByDate(date1);
+		else throw new InvalidOperationException("La jour demandé est antérieur au jour d'aujourd'hui" );
+		
 		
 	}
 	
