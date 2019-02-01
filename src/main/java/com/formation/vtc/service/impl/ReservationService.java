@@ -44,8 +44,15 @@ public class ReservationService implements IReservationService {
 		Reservation reservation= new Reservation();
 		reservation.resaItemToResa(resa).getTrajet().setPlaceDispo(reservation.getTrajet().getPlaceDispo()-reservation.getNbPlaces());
 		
-		if((reservation.getTrajet().getId()==null) && !(trajetRepo.findById(reservation.getTrajet().getId()).isPresent())) {
+		if((reservation.getTrajet().getId()==null) && !(trajetRepo.findByDate(reservation.getTrajet().getHoraire()).isPresent())) {
 			reservation.setTrajet(trajetRepo.save(reservation.getTrajet()));
+		}
+		else if((reservation.getTrajet().getId()==null) && (trajetRepo.findByDate(reservation.getTrajet().getHoraire()).isPresent())) {
+			reservation.setTrajet(trajetRepo.findByDate(reservation.getTrajet().getHoraire()).get());
+		}
+		else if((trajetRepo.findByDate(reservation.getTrajet().getHoraire()).isPresent())) {
+
+			reservation.setTrajet(trajetRepo.findByDate(reservation.getTrajet().getHoraire()).get());
 		}
 		
 		return new ReservationItem(reservationRepo.save(reservation));
