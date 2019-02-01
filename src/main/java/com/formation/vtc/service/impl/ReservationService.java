@@ -21,6 +21,7 @@ import com.formation.vtc.persistence.entity.Trajet;
 import com.formation.vtc.persistence.repository.ReservationRepository;
 import com.formation.vtc.persistence.repository.TrajetRepository;
 import com.formation.vtc.service.IReservationService;
+import com.formation.vtc.utils.MailSender;
 
 @Service
 @Transactional
@@ -43,7 +44,10 @@ public class ReservationService implements IReservationService {
 		Reservation reservation= new Reservation();
 		reservation.resaItemToResa(resa).getTrajet().setPlaceDispo(reservation.getTrajet().getPlaceDispo()-reservation.getNbPlaces());
 		
-		reservation.setTrajet(trajetRepo.save(reservation.getTrajet()));
+		if((reservation.getTrajet().getId()==null) && !(trajetRepo.findById(reservation.getTrajet().getId()).isPresent())) {
+			reservation.setTrajet(trajetRepo.save(reservation.getTrajet()));
+		}
+		
 		return new ReservationItem(reservationRepo.save(reservation));
 	}
 	
@@ -58,9 +62,17 @@ public class ReservationService implements IReservationService {
 		opt.get().setEtatResa("Valide");
 		
 		//opt.get().getTrajet().setPlaceDispo(opt.get().getTrajet().getPlaceDispo()-opt.get().getNbPlaces());
+		//TODO gérer les mail et les messages d'envoi
+		ReservationItem res=new ReservationItem(reservationRepo.save(opt.get()));
+		if(reservationRepo.findById(res.getId()).get().getEtatResa().equals("Valide")) {
+			MailSender email = new MailSender();
+			String from="lokulen@gmail.com";
+			String subject="Trajet Proxair validé";
+			String msg="<h1>Votre trajet du : "+res.getDate()+" est validé</h1>";
+			email.sendMail(res.getEmail(), from, subject, msg);
+		}else throw new InternalError();
 		
-		
-		return new ReservationItem(reservationRepo.save(opt.get()));
+		return res;
 	}
 
 
