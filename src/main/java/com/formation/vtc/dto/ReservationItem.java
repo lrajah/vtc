@@ -27,7 +27,12 @@ public class ReservationItem {
 		
 		this.setNom(resa.getNom());
 		this.setPrenom(resa.getPrenom());
-		this.setEmail(resa.getMail());
+		
+		//TODO email à gérer
+		if(resa.getMail()==null) {
+			this.setEmail("");
+		}else this.setEmail(resa.getMail());
+		
 		this.setNbPlaces(resa.getNbPlaces());
 		
 		

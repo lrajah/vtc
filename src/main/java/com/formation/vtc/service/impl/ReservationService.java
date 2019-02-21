@@ -40,22 +40,25 @@ public class ReservationService implements IReservationService {
 		
 		resa.setNumResa(makeNumResa(10));
 		resa.setEtatResa("En attente");
-		
-		if(!(MailSender.mailCHecker(resa.getEmail())))throw new InvalidOperationException("L'email est incorrect");
+		//TODO à enlever après que le front soit pret
+		//if(!(MailSender.mailCHecker(resa.getEmail())))throw new InvalidOperationException("L'email est incorrect");
 		Reservation reservation= new Reservation();
 		reservation.resaItemToResa(resa).getTrajet().setPlaceDispo(reservation.getTrajet().getPlaceDispo()-reservation.getNbPlaces());
 		
-		if((reservation.getTrajet().getId()==null) && !(trajetRepo.findByDate(reservation.getTrajet().getHoraire()).isPresent())) {
+		Optional<Trajet> trajet=trajetRepo.findByDate(reservation.getTrajet().getHoraire());
+		if((reservation.getTrajet().getId()==null) && !(trajet.isPresent())) {
 			reservation.setTrajet(trajetRepo.save(reservation.getTrajet()));
 		}
-		else if((reservation.getTrajet().getId()==null) && (trajetRepo.findByDate(reservation.getTrajet().getHoraire()).isPresent())) {
-			reservation.setTrajet(trajetRepo.findByDate(reservation.getTrajet().getHoraire()).get());
+		else if((reservation.getTrajet().getId()==null) && (trajet.isPresent())) {
+			reservation.setTrajet(trajet.get());
 		}
-		else if((trajetRepo.findByDate(reservation.getTrajet().getHoraire()).isPresent())) {
+		else if((trajet.isPresent())) {
 
-			reservation.setTrajet(trajetRepo.findByDate(reservation.getTrajet().getHoraire()).get());
+			reservation.setTrajet(trajet.get());
 		}
-		
+		Trajet traj=reservation.getTrajet();
+		traj.setPlaceDispo(traj.getPlaceDispo()-reservation.getNbPlaces());
+		reservation.setTrajet(traj);
 		return new ReservationItem(reservationRepo.save(reservation));
 	}
 	
@@ -190,11 +193,11 @@ public class ReservationService implements IReservationService {
 				
 				trajet.setHoraire(date);
 				trajet.setNavette(null);
-				trajet.setPlaceDispo(8-place);
+				trajet.setPlaceDispo(8);
 				trajet.setPrix(8);
 			}
 			
-			if(place <= 8 && place <= trajet.getPlaceDispo()) {
+			if(place <= trajet.getPlaceDispo()) {
 			
 			Reservation resa = new Reservation();
 			resa.setEtatResa("En cours");

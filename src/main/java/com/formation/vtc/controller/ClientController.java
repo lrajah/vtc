@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,15 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.ReservationListItem;
 import com.formation.vtc.dto.TrajetListItem;
-import com.formation.vtc.dto.TrajetReservationItem;
 import com.formation.vtc.exception.InvalidOperationException;
 import com.formation.vtc.exception.NotFoundException;
-import com.formation.vtc.persistence.entity.Heure;
-import com.formation.vtc.persistence.entity.Reservation;
 import com.formation.vtc.service.IReservationService;
 import com.formation.vtc.service.ITrajetService;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping(value="/api/client")
 public class ClientController {
@@ -70,7 +68,7 @@ public class ClientController {
 		
 		format.setLenient(false);
 		Date now2=format.parse(strDate);
-		if(date1.compareTo(now2)>0)return trajetServ.findByDate(date1);
+		if(date1.compareTo(now2)>=0)return trajetServ.findByDate(date1);
 		else throw new InvalidOperationException("La jour demandé est antérieur au jour d'aujourd'hui" );
 		
 		
