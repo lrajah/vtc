@@ -35,8 +35,8 @@ public class MailSender {
 		this.setTo(to);
 
 		// Get the default Session object.
-		final String username = "lokulen@gmail.com";
-		final String password = "St&rgate-sgi1";
+		final String username = "";
+		final String password = "";
 
 //		this.getProperties().put("mail.smtp.host", "smtp.gmail.com");
 //		this.getProperties().put("mail.smtp.socketFactory.port", "465");
