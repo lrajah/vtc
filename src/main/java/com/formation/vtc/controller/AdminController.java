@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formation.vtc.dto.HeureDepartListItem;
+import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.persistence.entity.Heure;
 import com.formation.vtc.service.IAdminService;
@@ -57,5 +59,13 @@ public class AdminController {
 	public TrajetListItem cancelTournee(@RequestParam long id) throws ParseException{
 		
 		return adminServ.cancelTournee(id);
+	}
+	
+	//Créer une facture à partir d'un numéro de reservation
+	@GetMapping(value="/facture/{numRes}")
+	@ResponseBody
+	public ReservationItem findResa(@PathVariable String numRes) throws ParseException{
+		//TODO gérer parse exception
+		return adminServ.findResa(numRes);
 	}
 }

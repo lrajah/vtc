@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.formation.vtc.dto.ReservationItem;
 import com.formation.vtc.dto.TrajetListItem;
 import com.formation.vtc.exception.InvalidOperationException;
 import com.formation.vtc.persistence.entity.Reservation;
@@ -24,8 +25,10 @@ public class AdminService implements IAdminService{
 	
 	@Autowired
 	TrajetRepository trajetRepo;
+	
 	@Autowired
 	ReservationRepository reservationRepo;
+
 	@Override
 	public TrajetListItem cancelTournee(long id) {
 		
@@ -59,6 +62,17 @@ public class AdminService implements IAdminService{
 		}
 		
 		return new TrajetListItem(opt.get());
+	}
+	
+	@Override
+	public ReservationItem findResa(String numResa) {
+		Optional<Reservation> opt = reservationRepo.findByNumResaList(numResa);
+		
+		if(opt.isPresent()) {
+			if(opt.get().getEtatResa().equals("Valide")) return new ReservationItem(opt.get());
+			if(!opt.get().getEtatResa().equals("Valide")) throw new InvalidOperationException("Le numéro de réservation : "+numResa+" n'a pas encore été validé");
+		} else throw new InvalidOperationException("Le numéro de réservation : "+numResa+" n'existe pas");
+		return null;
 	}
 	
 }
